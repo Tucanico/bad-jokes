@@ -15,8 +15,8 @@ export default function Home() {
   const [joke, setJoke] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [avatarSelect, setAvatarSelect] = useState<string>("greet");
-  const [laugh] = useSound("/Media/Sounds/laugh2.mp3");
-  const [splat] = useSound("/Media/Sounds/punch1.mp3");
+  const [laugh] = useSound("/Media/Sounds/laugh.mp3");
+  const [splat] = useSound("/Media/Sounds/punch.mp3");
 
   const getJoke = async () => {
     try {

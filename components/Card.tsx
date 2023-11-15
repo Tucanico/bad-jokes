@@ -12,13 +12,15 @@ interface Props {
 export default function Card({ word, selectedWords, setSelectedWords }: Props) {
   const [showError, setShowError] = useState<boolean>(false);
   const img: string = word.toLowerCase();
-  const [splat] = useSound("/Media/Sounds/pick.mp3");
+  const [splat] = useSound("/Media/Sounds/pick.mp3", { volume: 0.3 });
+  const [swoosh] = useSound("/Media/Sounds/swoosh.mp3", { volume: 0.3 });
 
   const selectWord = () => {
     if (selectedWords.length <= 2 && !selectedWords.includes(word)) {
       splat();
       setSelectedWords([...selectedWords, word]);
     } else if (selectedWords.includes(word)) {
+      swoosh();
       setSelectedWords((current) =>
         current.filter((wordz) => {
           return wordz !== word;
