@@ -1,11 +1,13 @@
 import styles from "@/styles/general.module.css";
 import { Dispatch, SetStateAction } from "react";
+import useSound from "use-sound";
 
 interface Props {
   setGo: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function Intro({ setGo }: Props) {
+  const [swoosh] = useSound("/Media/Sounds/whoosh.mp3");
   return (
     <>
       <div className={styles.intro_div}>
@@ -19,6 +21,7 @@ export default function Intro({ setGo }: Props) {
         <a
           onClick={() => {
             setGo(true);
+            swoosh();
           }}
           className={styles.intro_go}
         >

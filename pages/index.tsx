@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { formatJoke } from "@/lib/utils";
 import Image from "next/image";
 import Modal from "@/components/Modal";
+import useSound from "use-sound";
 
 export default function Home() {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -14,6 +15,7 @@ export default function Home() {
   const [joke, setJoke] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [avatarSelect, setAvatarSelect] = useState<string>("greet");
+  const [laugh] = useSound("/Media/Sounds/laugh2.mp3");
 
   const getJoke = async () => {
     try {
@@ -25,9 +27,9 @@ export default function Home() {
         },
         body: JSON.stringify({ words: selectedWords }).toLowerCase(),
       }).then((res) => res.json());
-      console.log(res.data.choices[0].text);
       setJoke(formatJoke(res.data.choices[0].text));
       setIsOpen(true);
+      laugh();
       if (typeof window != "undefined" && window.document) {
         document.body.style.overflow = "hidden";
       }
