@@ -1,7 +1,11 @@
 import styles from "@/styles/general.module.css";
 import Image from "next/image";
+import useSound from "use-sound";
 
 export default function Footer() {
+  const [laugh1] = useSound("/Media/Sounds/laugh4.mp3");
+  const [laugh2] = useSound("/Media/Sounds/laugh5.mp3");
+  const [laugh3] = useSound("/Media/Sounds/laugh6.mp3");
   return (
     <>
       <div className={styles.footer_container}>
@@ -18,6 +22,7 @@ export default function Footer() {
               href="https://github.com/JacoLombardo"
               target="_blank"
               className={styles.github_link}
+              onClick={laugh1}
             >
               <Image
                 src={
@@ -48,6 +53,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/jacopo-lombardo/"
               target="_blank"
               className={styles.linkedin_link}
+              onClick={laugh2}
             >
               <Image
                 src={
@@ -78,6 +84,7 @@ export default function Footer() {
               href="mailto:jacopo.lombardo@outlook.com"
               target="_blank"
               className={styles.mail_link}
+              onClick={laugh3}
             >
               <Image
                 src={

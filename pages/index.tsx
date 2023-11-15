@@ -16,7 +16,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [avatarSelect, setAvatarSelect] = useState<string>("greet");
   const [laugh] = useSound("/Media/Sounds/laugh2.mp3");
-  const [splat] = useSound("/Media/Sounds/splat3.mp3");
+  const [splat] = useSound("/Media/Sounds/punch1.mp3");
 
   const getJoke = async () => {
     try {
@@ -33,7 +33,7 @@ export default function Home() {
       splat();
       setTimeout(() => {
         laugh();
-      }, 1000);
+      }, 800);
 
       if (typeof window != "undefined" && window.document) {
         document.body.style.overflow = "hidden";
