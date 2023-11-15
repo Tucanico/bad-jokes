@@ -12,7 +12,7 @@ interface Props {
 export default function Card({ word, selectedWords, setSelectedWords }: Props) {
   const [showError, setShowError] = useState<boolean>(false);
   const img: string = word.toLowerCase();
-  const [splat] = useSound("/Media/Sounds/splat.mp3");
+  const [splat] = useSound("/Media/Sounds/pick.mp3");
 
   const selectWord = () => {
     if (selectedWords.length <= 2 && !selectedWords.includes(word)) {
