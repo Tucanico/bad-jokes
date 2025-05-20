@@ -16,7 +16,7 @@ export default async function completion(
   }
 
   const response = await openai.completions.create({
-    model: "gpt-3.5-turbo-instruct",
+    model: "gpt-3.5-turbo",
     prompt: prompt,
     max_tokens: 50,
   });
