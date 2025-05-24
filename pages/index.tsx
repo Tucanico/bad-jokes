@@ -28,7 +28,7 @@ export default function Home() {
         },
         body: JSON.stringify({ words: selectedWords }).toLowerCase(),
       }).then((res) => res.json());
-      setJoke(formatJoke(res.data.choices[0].text));
+      setJoke(formatJoke(res.data.choices[0].message.content));
       setIsOpen(true);
       splat();
       setTimeout(() => {

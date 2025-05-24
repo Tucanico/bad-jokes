@@ -15,9 +15,14 @@ export default async function completion(
     return res.status(400).json({ error: "Invalid request" });
   }
 
-  const response = await openai.completions.create({
+  const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
-    prompt: prompt,
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
     max_tokens: 50,
   });
 
