@@ -1,4 +1,4 @@
-![Bad Jokes](https://res.cloudinary.com/dtl48kr1u/image/upload/v1699270985/bad-jokes/title2_s1prxl.png)
+<img src="https://res.cloudinary.com/dtl48kr1u/image/upload/v1699270985/bad-jokes/title2_s1prxl.png" width="320" alt="Bad Jokes" />
 
 Bad Jokes is a web app that lets users pick up to three words and generates a dad joke using OpenAI. It features a comic-style UI with an avatar, sound effects, and a modal to display the joke.
 
