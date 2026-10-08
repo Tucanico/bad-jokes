@@ -19,7 +19,7 @@ export default function Footer() {
           </div>
           <div className={styles.icons_div}>
             <a
-              href="https://github.com/JacoLombardo"
+              href="https://github.com/Tucanico"
               target="_blank"
               className={styles.github_link}
               onClick={laugh1}
@@ -81,7 +81,7 @@ export default function Footer() {
               />
             </a>
             <a
-              href="mailto:jacopo.lombardo@outlook.com"
+              href="mailto:hello@jacopolombardo.com"
               target="_blank"
               className={styles.mail_link}
               onClick={laugh3}
