@@ -15,7 +15,7 @@ export default function Footer() {
             <p style={{ fontSize: "25px", marginBottom: "0px" }}>
               Very Bad Jokes
             </p>
-            <p>(Bad) Jokes generator developed using the OpenAI API.</p>
+            <p>(Bad) Jokes generator developed using the Mistral AI API.</p>
           </div>
           <div className={styles.icons_div}>
             <a

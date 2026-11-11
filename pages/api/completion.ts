@@ -1,4 +1,4 @@
-import { openai } from "@/lib/openAI";
+import { mistral } from "@/lib/mistral";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function completion(
@@ -15,15 +15,15 @@ export default async function completion(
     return res.status(400).json({ error: "Invalid request" });
   }
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+  const response = await mistral.chat.complete({
+    model: "mistral-small-latest",
     messages: [
       {
         role: "user",
         content: prompt,
       },
     ],
-    max_tokens: 50,
+    maxTokens: 50,
   });
 
   return res.status(200).json({
