@@ -44,7 +44,7 @@ export default async function completion(
       .trim() ||
     req.socket.remoteAddress ||
     "unknown";
-  const limit = await rateLimit(clientIp);
+  const limit = rateLimit(clientIp);
   if (!limit.ok) {
     res.setHeader("Retry-After", String(limit.retryAfterSeconds));
     return res.status(429).json({ error: "Too many jokes, try again in a minute" });

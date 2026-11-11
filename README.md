@@ -24,7 +24,6 @@ The app is built around a single flow:
 - Mistral AI API
 - Bootstrap
 - use-sound
-- Upstash Redis (optional, shared rate limit)
 
 ## Setup
 
@@ -37,13 +36,6 @@ Create `.env.local` in the project root with your Mistral API key:
 
 ```
 MISTRAL_API_KEY=your_mistral_api_key_here
-```
-
-Optional: the joke API allows 10 jokes per minute per visitor. Without Upstash that count is kept per server instance; to share it across all instances, create an Upstash Redis database and add its REST credentials (Vercel's Upstash integration sets `KV_REST_API_URL` and `KV_REST_API_TOKEN` instead, which also work):
-
-```
-UPSTASH_REDIS_REST_URL=your_upstash_rest_url_here
-UPSTASH_REDIS_REST_TOKEN=your_upstash_rest_token_here
 ```
 
 ## Build
@@ -63,4 +55,5 @@ npm run start
 ## Notes
 
 - Requires a valid Mistral API key for joke generation.
+- In production, a Vercel Firewall rule limits `POST /api/completion` to 10 requests per minute per IP and answers 429 beyond that. The API's own in-memory limit is only a backstop.
 - Media folder at repo level (outside this app) is for design assets only and can be ignored for running the app.

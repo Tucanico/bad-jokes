@@ -1,8 +1,14 @@
 # Changelog
 
+## 2026-11-11 15:06 — refactor(api): rate-limit through the Vercel Firewall instead of Upstash
+
+A Vercel Firewall rule (`POST /api/completion`, 10 requests per 60 seconds per IP, answering 429) now does the rate limiting. It needs no extra account or credentials, stops abusive requests before they reach the function or Mistral, and blocked traffic isn't billed as CDN requests. The Upstash code, both `@upstash` packages and the Upstash setup in the README are removed. The in-memory counter stays as a backstop for local runs and for anything that gets past the rule. The firewall counts per Vercel region, not globally, which matters little since one client normally hits one region.
+
 ## 2026-11-11 15:00 — chore: upgrade to React 19 and clear the remaining audit findings
 
 Next.js 16 deprecates React 18 and drops it in Next.js 17, so React, React DOM and their types move to 19.3. Nothing in the app used the APIs React 19 removed. `npm audit` still reported 7 moderate dev-only advisories, all from `typescript-eslint` 8.72.2 (the newest release) pulling in `minimatch` 10.2.6, which has a denial-of-service bug fixed in 11.0.1. `package.json` now overrides that one dependency to exactly `minimatch` 11.0.1; remove the override once `typescript-eslint` ships with a fixed `minimatch`. `npm audit` now reports 0 vulnerabilities. `tsconfig.json` targets ES2017 instead of ES5, which TypeScript 6 deprecates and TypeScript 7 drops (Next.js compiles with SWC, so this only affects type checking). `AGENTS.md`, which `next dev` writes for AI coding tools, is now committed so it stops showing up as an untracked file.
+
+a6806d7
 
 ## 2026-11-11 14:51 — fix: upgrade to Next.js 16, share the rate limit through Upstash and strip markdown from jokes
 
