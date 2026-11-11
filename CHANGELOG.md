@@ -1,8 +1,14 @@
 # Changelog
 
+## 2026-11-11 15:00 — chore: upgrade to React 19 and clear the remaining audit findings
+
+Next.js 16 deprecates React 18 and drops it in Next.js 17, so React, React DOM and their types move to 19.3. Nothing in the app used the APIs React 19 removed. `npm audit` still reported 7 moderate dev-only advisories, all from `typescript-eslint` 8.72.2 (the newest release) pulling in `minimatch` 10.2.6, which has a denial-of-service bug fixed in 11.0.1. `package.json` now overrides that one dependency to exactly `minimatch` 11.0.1; remove the override once `typescript-eslint` ships with a fixed `minimatch`. `npm audit` now reports 0 vulnerabilities. `tsconfig.json` targets ES2017 instead of ES5, which TypeScript 6 deprecates and TypeScript 7 drops (Next.js compiles with SWC, so this only affects type checking). `AGENTS.md`, which `next dev` writes for AI coding tools, is now committed so it stops showing up as an untracked file.
+
 ## 2026-11-11 14:51 — fix: upgrade to Next.js 16, share the rate limit through Upstash and strip markdown from jokes
 
 Mistral kept wrapping words in markdown (`*noodle*`) despite the plain-text prompt, and the joke box showed the asterisks, so `formatJoke` now strips emphasis, backticks and headings. Next.js 15.5 was still flagged through its bundled PostCSS; Next.js 16.4.3 has no production advisories (16.4.6 was two days old, so not used). Next.js 16 drops `next lint`, so linting now runs ESLint 9 directly with a flat `eslint.config.mjs`, and `npm audit fix` updated the vulnerable dev tooling it could. The rate limit is shared across server instances through Upstash Redis when `UPSTASH_REDIS_REST_URL`/`_TOKEN` (or Vercel's `KV_REST_API_URL`/`_TOKEN`) are set, and falls back to the in-memory counter when they are not or Upstash does not answer within a second, so an outage slows a joke by at most about a second instead of blocking it.
+
+434cc64
 
 ## 2026-11-11 14:36 — fix: upgrade to Next.js 15.5, rate-limit the joke API and stop sideways scrolling
 

@@ -19,7 +19,7 @@ The app is built around a single flow:
 
 ## Technology
 
-- Next.js 16 + React 18
+- Next.js 16 + React 19
 - TypeScript
 - Mistral AI API
 - Bootstrap
