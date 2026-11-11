@@ -13,20 +13,22 @@ export default function Intro({ setGo }: Props) {
       <div className={styles.intro_div}>
         <div>
           <p>
-            Do you want to soffocate your friends with horrible jokes but none
+            Do you want to suffocate your friends with horrible jokes but none
             come to mind?
           </p>
           <p>Then you are in the right place.</p>
         </div>
-        <a
+        <button
+          type="button"
+          aria-label="Start"
           onClick={() => {
             setGo(true);
             swoosh();
           }}
           className={styles.intro_go}
         >
-          <div className={styles.intro_avatar}></div>
-        </a>
+          <span className={styles.intro_avatar}></span>
+        </button>
       </div>
     </>
   );

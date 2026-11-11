@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar";
 import Cards from "@/components/Cards";
 import Intro from "@/components/Intro";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "@/styles/general.module.css";
 import Footer from "@/components/Footer";
 import { formatJoke } from "@/lib/utils";
@@ -18,28 +18,38 @@ export default function Home() {
   const [laugh] = useSound("/Media/Sounds/laugh.mp3");
   const [splat] = useSound("/Media/Sounds/punch.mp3");
 
+  // A ref, not state: every click is a paid Mistral call, and state would still read
+  // "not loading" for clicks that land before the next render.
+  const isLoading = useRef<boolean>(false);
+
   const getJoke = async () => {
+    if (isLoading.current) return;
+    isLoading.current = true;
+    setAvatarSelect("stressed");
     try {
-      setAvatarSelect("stressed");
       const res = await fetch("/api/completion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ words: selectedWords }).toLowerCase(),
-      }).then((res) => res.json());
-      setJoke(formatJoke(res.data.choices[0].message.content));
-      setIsOpen(true);
+        body: JSON.stringify({ words: selectedWords }),
+      });
+      const body = await res.json();
+      if (!res.ok || typeof body.joke !== "string") {
+        throw new Error(body.error ?? `Request failed with ${res.status}`);
+      }
+      setJoke(formatJoke(body.joke));
       splat();
       setTimeout(() => {
         laugh();
       }, 800);
-
-      if (typeof window != "undefined" && window.document) {
-        document.body.style.overflow = "hidden";
-      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setJoke("Oops, my joke machine broke. Try again!");
+    } finally {
+      setIsOpen(true);
+      document.body.style.overflow = "hidden";
+      isLoading.current = false;
     }
   };
 

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import Card from "./Card";
 import styles from "@/styles/card.module.css";
+import { WORDS } from "@/lib/words";
 
 interface Props {
   selectedWords: string[];
@@ -8,38 +9,13 @@ interface Props {
 }
 
 export default function Cards({ selectedWords, setSelectedWords }: Props) {
-  const words: string[] = [
-    "Queen",
-    "Giant",
-    "Sneeze",
-    "Sun",
-    "Tequila",
-    "Dad",
-    "Surf",
-    "Carrot",
-    "Devil",
-    "Toy",
-    "Crocs",
-    "Monkey",
-    "T-Rex",
-    "Leggins",
-    "Spring",
-    "Bubbles",
-    "Spaghetti",
-    "Ball",
-    "Robot",
-    "Pan",
-    "WC",
-    "Lollipop",
-    "Castle",
-  ];
   return (
     <>
       <div className={styles.card_container}>
-        {words.map((word, index) => {
+        {WORDS.map((word) => {
           return (
             <Card
-              key={index}
+              key={word}
               word={word}
               selectedWords={selectedWords}
               setSelectedWords={setSelectedWords}

@@ -1,6 +1,6 @@
 import styles from "@/styles/modal.module.css";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect } from "react";
 
 interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -15,15 +15,26 @@ export default function Modal({
   setAvatarSelect,
   setSelectedWords,
 }: Props) {
+  // Every way of closing goes through here; the background click used to skip the
+  // scroll unlock and leave the page frozen.
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setAvatarSelect("good");
+    document.body.style.overflow = "unset";
+    setSelectedWords([]);
+  }, [setIsOpen, setAvatarSelect, setSelectedWords]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [close]);
+
   return (
     <>
-      <div
-        className={styles.modal_background}
-        onClick={() => {
-          setIsOpen(false);
-          setAvatarSelect("good");
-        }}
-      />
+      <div className={styles.modal_background} onClick={close} />
       <div className={styles.modal}>
         <Image
           src={
@@ -41,13 +52,10 @@ export default function Modal({
         </div>
 
         <button
+          type="button"
+          aria-label="Close"
           className={styles.close_button}
-          onClick={() => {
-            setIsOpen(false);
-            setAvatarSelect("good");
-            document.body.style.overflow = "unset";
-            setSelectedWords([]);
-          }}
+          onClick={close}
         >
           X
         </button>

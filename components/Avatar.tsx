@@ -2,10 +2,11 @@
 import Image from "next/image";
 import styles from "@/styles/card.module.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { MIN_WORDS } from "@/lib/words";
 
 interface Props {
   selectedWords: string[];
-  getJoke: Function;
+  getJoke: () => void;
   avatarSelect: string;
   setAvatarSelect: Dispatch<SetStateAction<string>>;
 }
@@ -19,7 +20,7 @@ export default function Avatar({
   const [showError, setShowError] = useState<boolean>(false);
 
   const getJokeHandler = () => {
-    if (selectedWords.length < 2) {
+    if (selectedWords.length < MIN_WORDS) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
@@ -95,21 +96,21 @@ export default function Avatar({
             </div>
           )}
         </div>
-        <a onClick={getJokeHandler} className={styles.go}>
+        <button type="button" onClick={getJokeHandler} className={styles.go}>
           {showError && (
             <span className={styles.tooltiptext}>
               Select at least two words
             </span>
           )}
-          <h1>GO!</h1>
-        </a>
+          <span className={`h1 ${styles.go_label}`}>GO!</span>
+        </button>
       </div>
-      <a onClick={getJokeHandler} className={styles.go_out}>
+      <button type="button" onClick={getJokeHandler} className={styles.go_out}>
         {showError && (
           <span className={styles.tooltiptext}>Select at least two words</span>
         )}
-        <h1>GO!</h1>
-      </a>
+        <span className={`h1 ${styles.go_label}`}>GO!</span>
+      </button>
     </>
   );
 }
