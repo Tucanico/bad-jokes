@@ -19,12 +19,12 @@ The app is built around a single flow:
 
 ## Technology
 
-- Next.js 14 + React 18
+- Next.js 16 + React 18
 - TypeScript
 - Mistral AI API
 - Bootstrap
 - use-sound
-- Sharp (images)
+- Upstash Redis (optional, shared rate limit)
 
 ## Setup
 
@@ -37,6 +37,13 @@ Create `.env.local` in the project root with your Mistral API key:
 
 ```
 MISTRAL_API_KEY=your_mistral_api_key_here
+```
+
+Optional: the joke API allows 10 jokes per minute per visitor. Without Upstash that count is kept per server instance; to share it across all instances, create an Upstash Redis database and add its REST credentials (Vercel's Upstash integration sets `KV_REST_API_URL` and `KV_REST_API_TOKEN` instead, which also work):
+
+```
+UPSTASH_REDIS_REST_URL=your_upstash_rest_url_here
+UPSTASH_REDIS_REST_TOKEN=your_upstash_rest_token_here
 ```
 
 ## Build

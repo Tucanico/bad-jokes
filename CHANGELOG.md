@@ -1,8 +1,14 @@
 # Changelog
 
+## 2026-11-11 14:51 — fix: upgrade to Next.js 16, share the rate limit through Upstash and strip markdown from jokes
+
+Mistral kept wrapping words in markdown (`*noodle*`) despite the plain-text prompt, and the joke box showed the asterisks, so `formatJoke` now strips emphasis, backticks and headings. Next.js 15.5 was still flagged through its bundled PostCSS; Next.js 16.4.3 has no production advisories (16.4.6 was two days old, so not used). Next.js 16 drops `next lint`, so linting now runs ESLint 9 directly with a flat `eslint.config.mjs`, and `npm audit fix` updated the vulnerable dev tooling it could. The rate limit is shared across server instances through Upstash Redis when `UPSTASH_REDIS_REST_URL`/`_TOKEN` (or Vercel's `KV_REST_API_URL`/`_TOKEN`) are set, and falls back to the in-memory counter when they are not or Upstash does not answer within a second, so an outage slows a joke by at most about a second instead of blocking it.
+
 ## 2026-11-11 14:36 — fix: upgrade to Next.js 15.5, rate-limit the joke API and stop sideways scrolling
 
 Next.js 14.2.35 still had 25 open advisories, three of them critical (two in the image optimizer). Next.js 15.5.29 clears all of them except its bundled PostCSS 8.4.31, which only matters when building attacker-supplied CSS and is fixed only in Next.js 16. Next.js 15 installs a patched sharp (0.35.5) on its own, so the old explicit `sharp@0.32.6` dependency is gone, and `npm audit fix` updated the vulnerable `nanoid` and `source-map-js`. `/api/completion` now allows 10 jokes per minute per client IP and answers 429 with `Retry-After` beyond that, so valid requests can't be sent in bulk on our Mistral bill; the page says "Whoa, too many bad jokes! Give me a minute." The counter lives in memory, so it is per server instance and not a hard global cap. The card grid slides in from off the right edge, which made the page scroll sideways at every width while it animated; the page wrapper now clips horizontal overflow. `global.d.ts` gets a comment saying why it is needed.
+
+9ac039e
 
 ## 2026-11-11 14:26 — fix: harden the joke API, upgrade Next.js and fix modal, card and accessibility issues
 
