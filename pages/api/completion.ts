@@ -9,7 +9,7 @@ export default async function completion(
 
   const orderedWords: string = words.join(", ");
 
-  const prompt = `Write me a joke with ${orderedWords}. Max 30 words.`;
+  const prompt = `Write me a joke with ${orderedWords}. Max 30 words. Plain text only, no markdown or emojis.`;
 
   if (req.method !== "POST") {
     return res.status(400).json({ error: "Invalid request" });
