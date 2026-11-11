@@ -37,6 +37,13 @@
   }
 }
 
+/* The card grid slides in from translateX(100%), past the right edge. Without this the page
+   scrolls sideways while it animates, and Chrome can keep that stale width afterwards.
+   clip (not hidden) so the sticky GO button keeps working. */
+.content {
+  overflow-x: clip;
+}
+
 @media (min-width: 768px) {
   .intro_div {
     width: 60%;

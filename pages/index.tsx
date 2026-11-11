@@ -34,6 +34,10 @@ export default function Home() {
         },
         body: JSON.stringify({ words: selectedWords }),
       });
+      if (res.status === 429) {
+        setJoke("Whoa, too many bad jokes! Give me a minute.");
+        return;
+      }
       const body = await res.json();
       if (!res.ok || typeof body.joke !== "string") {
         throw new Error(body.error ?? `Request failed with ${res.status}`);

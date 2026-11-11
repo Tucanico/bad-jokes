@@ -1,4 +1,5 @@
 import { mistral } from "@/lib/mistral";
+import { rateLimit } from "@/lib/rateLimit";
 import { MAX_WORDS, MIN_WORDS, WORDS } from "@/lib/words";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -31,6 +32,22 @@ export default async function completion(
     return res.status(400).json({
       error: `Pick ${MIN_WORDS} to ${MAX_WORDS} different words from the cards`,
     });
+  }
+
+  // Checked after validation so only requests that would reach Mistral use up the quota.
+  // x-forwarded-for is set by the hosting proxy; it can be spoofed if the app is ever exposed
+  // without one.
+  const forwardedFor = req.headers["x-forwarded-for"];
+  const clientIp =
+    (Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor)
+      ?.split(",")[0]
+      .trim() ||
+    req.socket.remoteAddress ||
+    "unknown";
+  const limit = rateLimit(clientIp);
+  if (!limit.ok) {
+    res.setHeader("Retry-After", String(limit.retryAfterSeconds));
+    return res.status(429).json({ error: "Too many jokes, try again in a minute" });
   }
 
   const prompt = `Write me a joke with ${words.join(", ")}. Max 30 words. Plain text only, no markdown or emojis.`;

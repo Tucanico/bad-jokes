@@ -1,8 +1,14 @@
 # Changelog
 
+## 2026-11-11 14:36 — fix: upgrade to Next.js 15.5, rate-limit the joke API and stop sideways scrolling
+
+Next.js 14.2.35 still had 25 open advisories, three of them critical (two in the image optimizer). Next.js 15.5.29 clears all of them except its bundled PostCSS 8.4.31, which only matters when building attacker-supplied CSS and is fixed only in Next.js 16. Next.js 15 installs a patched sharp (0.35.5) on its own, so the old explicit `sharp@0.32.6` dependency is gone, and `npm audit fix` updated the vulnerable `nanoid` and `source-map-js`. `/api/completion` now allows 10 jokes per minute per client IP and answers 429 with `Retry-After` beyond that, so valid requests can't be sent in bulk on our Mistral bill; the page says "Whoa, too many bad jokes! Give me a minute." The counter lives in memory, so it is per server instance and not a hard global cap. The card grid slides in from off the right edge, which made the page scroll sideways at every width while it animated; the page wrapper now clips horizontal overflow. `global.d.ts` gets a comment saying why it is needed.
+
 ## 2026-11-11 14:26 — fix: harden the joke API, upgrade Next.js and fix modal, card and accessibility issues
 
 An audit found that `/api/completion` passed any text straight into the Mistral prompt, so anyone could run their own prompts on our key. It now only accepts 2 or 3 different words from the card list (shared in `lib/words.ts`), answers 405 to anything but POST, returns just `{ joke }` instead of Mistral's whole response, and returns 502 when Mistral fails. The page shows an error message in that case instead of failing silently, and ignores extra GO clicks while a joke is loading, since each one was a paid call. Next.js goes from 14.0.1 to 14.2.35 (36 to 25 open advisories; the rest need 15.5 or later), and the image optimizer now only accepts our own Cloudinary folder. Closing the joke by clicking outside used to leave the page unable to scroll; every close (X, outside click, and now Esc) shares one handler. Cards, GO and the start avatar are real buttons, so they work with a keyboard. Card icons no longer all preload at full-screen size. Typos fixed ("suffocate", "Leggings", the word-limit message), and the unused `app/globals.css` was removed.
+
+76bc476
 
 ## 2026-11-11 13:56 — feat(api): switch joke generation from OpenAI to Mistral
 
